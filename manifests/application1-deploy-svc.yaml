@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: application1
+  name: application1
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: application1
+  strategy: {}
+  template:
+    metadata:
+      labels:
+        app: application1
+    spec:
+      containers:
+        - image: shivkanwer/testapp
+          name: testapp
+          ports:
+            - containerPort: 80
+          env:
+            - name: APP_NAME
+              value: "Application 1"
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: application1-svc
+spec:
+  selector:
+    app: application1
+  ports:
+    - port: 80
+  type: LoadBalancer

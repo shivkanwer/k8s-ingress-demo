@@ -1,0 +1,43 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: application-ingress
+  annotations:
+    nginx.ingress.kubernetes.io/ssl-redirect: "false"
+    nginx.ingress.kubernetes.io/rewrite-target: /
+spec:
+  ingressClassName: nginx
+  rules:
+    - http:
+        paths:
+          - backend:
+              service:
+                name: application1-svc
+                port:
+                  number: 80
+            path: /
+            pathType: Prefix
+          - backend:
+              service:
+                name: application2-svc
+                port:
+                  number: 80
+            path: /webapp2
+            pathType: Prefix
+    - host: frontend.52.18.28.152.nip.io # change the IP address here
+      http:
+        paths:
+          - backend:
+              service:
+                name: application1-svc
+                port:
+                  number: 80
+            path: /
+            pathType: Prefix
+          - backend:
+              service:
+                name: application2-svc
+                port:
+                  number: 80
+            path: /webapp2
+            pathType: Prefix
